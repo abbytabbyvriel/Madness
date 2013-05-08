@@ -2,9 +2,9 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
   var %loadcmd load -rs
   if ($($+(%,access,.,$nick),2) > 2) {
     if ($2 == Misc) {
-      if !$script(remote.mrc) {
+      if !$script(Misc.mrc) {
         msg $chan Misc module has been loaded!
-        $(%loadcmd) scripts/remote.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Misc.mrc
       }
       else {
         msg $chan Misc module is already loaded!
@@ -13,7 +13,7 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == Facts) {
       if !$script(Facts.mrc) {
         msg $chan Facts module has been loaded!
-        $(%loadcmd) scripts/Facts.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Facts.mrc
       }
       else {
         msg $chan Facts module is already loaded!
@@ -22,7 +22,7 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == Admin) {
       if !$script(Admin.mrc) {
         msg $chan Admin has been loaded!
-        $(%loadcmd) scripts/Admin.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Admin.mrc
       }
       else {
         msg $chan Admin module has been loaded!
@@ -31,7 +31,7 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == YouTube) {
       if !$script(YouTube.mrc) {
         msg $chan YouTube module has been loaded!
-        $(%loadcmd) scripts/YouTube.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/YouTube.mrc
       }
       else {
         msg $chan YouTube module is already loaded!
@@ -58,7 +58,7 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == Loli) {
       if !$script(Loli.mrc) {
         msg $chan Loli module has been loaded!
-        $(%loadcmd) scripts/Loli.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Loli.mrc
       }
       else {
         msg $chan Loli module is already loaded!
@@ -68,8 +68,8 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
       if !$script(spam.mrc) {
         if !$script(floodamount.mrc) {
           msg $chan Antispam module has been loaded!
-          $(%loadcmd) scripts/spam.mrc
-          $(%loadcmd) scripts/flooadamount.mrc
+          $(%loadcmd) Z:/home/tanmay/Madness/spam.mrc
+          $(%loadcmd) Z:/home/tanmay/Madness/flooadamount.mrc
         }
       }
       else {
@@ -79,7 +79,7 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == XOP) {
       if $script(XOP.mrc) {
         msg $chan XOP module has been loaded!
-        $(%loadcmd) scripts/XOP.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/XOP.mrc
       }
       else {
         msg $chan XOP module is not loaded!
@@ -94,9 +94,9 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
   var %loadcmd unload -rs
   if ($($+(%,access,.,$nick),2) > 2) {
     if ($2 == Misc) {
-      if $script(remote.mrc) {
+      if $script(Misc.mrc) {
         msg $chan Misc module has been unloaded!
-        $(%loadcmd) scripts/remote.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Misc.mrc
       }
       else {
         msg $chan Misc module is not loaded!
@@ -105,7 +105,7 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
     if ($2 == Facts) {
       if $script(Facts.mrc) {
         msg $chan Facts module has been unloaded!
-        $(%loadcmd) scripts/Facts.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Facts.mrc
       }
       else {
         msg $chan Facts module is not loaded!
@@ -114,7 +114,7 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
     if ($2 == Admin) {
       if $script(Admin.mrc) {
         msg $chan Admin has been unloaded!
-        $(%loadcmd) scripts/Admin.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Admin.mrc
       }
       else {
         msg $chan Admin module is not loaded!
@@ -123,7 +123,7 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
     if ($2 == YouTube) {
       if $script(YouTube.mrc) {
         msg $chan YouTube module has been unloaded!
-        $(%loadcmd) scripts/YouTube.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/YouTube.mrc
       }
       else {
         msg $chan YouTube module is not loaded!
@@ -132,7 +132,7 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
     if ($2 == Loli) {
       if $script(Loli.mrc) {
         msg $chan Loli module has been unloaded!
-        $(%loadcmd) scripts/Loli.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/Loli.mrc
       }
       else {
         msg $chan Loli module is not loaded!
@@ -160,8 +160,8 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
       if $script(spam.mrc) {
         if !$script(floodamount.mrc) {
           msg $chan Antispam module has been unloaded!
-          $(%loadcmd) scripts/spam.mrc
-          $(%loadcmd) scripts/flooadamount.mrc
+          $(%loadcmd) Z:/home/tanmay/Madness/spam.mrc
+          $(%loadcmd) Z:/home/tanmay/Madness/flooadamount.mrc
         }
       }
       else {
@@ -171,7 +171,7 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
     if ($2 == XOP) {
       if $script(XOP.mrc) {
         msg $chan XOP module has been unloaded.
-        $(%loadcmd) scripts/XOP.mrc
+        $(%loadcmd) Z:/home/tanmay/Madness/XOP.mrc
       }
       else {
         msg $chan XOP module is not loaded!
