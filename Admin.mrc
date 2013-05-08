@@ -80,3 +80,20 @@ on $*:TEXT:/^[.](newserver):#: {
     notice $nick Permission denied.
   }
 }
+on $*:TEXT:/^[!]/Si:#: {
+  var %command $remove($1, !)
+  var %aliascmd $+(%,alias,.,%command)
+  if (%aliascmd == $null) {
+    if ($($+(%,access,.,$nick),2) > 3) {
+      set %alias. $+ $(%command) $+(%alias. $+ $(%command))
+      alias alias. $+ $(%command) $2-
+      msg $chan $(%command) has been set to $2-
+    }
+    else {
+      msg $chan Permission denied, you must be a bot admin.
+    }
+  }
+  else {
+    alias. $+ $(%command)
+  }
+}
