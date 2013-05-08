@@ -81,14 +81,18 @@ on $*:TEXT:/^[.](newserver):#: {
   }
 }
 on $*:TEXT:/^[!]/Si:#: {
-  if ($($+(%,access,.,$nick),2) > 3) {
-    if ($($+(%,alias,.,$remove($1, !)),2) == $null) {
+  if ($($+(%,alias,.,$remove($1, !)),2) == $null) {
+    if ($($+(%,access,.,$nick),2) > 3) {
       var %command $+(alias.,$remove($1, !))
       set %alias. $+ $remove($1, !) set
       alias alias. $+ $remove($1, !) $2-
-      notice $nick $remove($1, !) has been set to $2-
+      notice $nick $1 has been set to $2-
     }
     else {
       alias. $+ $remove($1, !)
     }
   }
+  else {
+    alias. $+ $remove($1, !)
+  }
+}
