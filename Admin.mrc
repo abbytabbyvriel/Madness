@@ -96,3 +96,27 @@ on $*:TEXT:/^[!]/Si:#: {
     alias. $+ $remove($1, !)
   }
 }
+on $*:TEXT:/^[.](change)/Si:#: {
+  if ($2 != $null) {
+    if ($3 != $null) {
+      if ($($+(%,access,.,$nick,),2) > 2) {
+        if ($($+(%,alias,.,$2),2) != $null) {
+          /alias /alias. $+ $2 $3-
+          notice $nick ! $+ $2 changed to $3-
+        }
+        else {
+          notice $nick Alias $2 does not exist!
+        }
+      }
+      else {
+        notice $nick Permission denied.
+      }
+    }
+    else {
+      notice $nick Usage: .change (item) (commans)
+    }
+  }
+  else {
+    notice $nick Usage .change (item) (command)
+  }
+}
