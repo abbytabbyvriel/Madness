@@ -19,6 +19,15 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
         msg $chan Facts module is already loaded!
       }
     }
+    if ($2 == Admin) {
+      if !$script(Admin.mrc) {
+        msg $chan Admin has been loaded!
+        $(%loadcmd) scripts/Admin.mrc
+      }
+      else {
+        msg $chan Admin module has been loaded!
+      }
+    }
     if ($2 == YouTube) {
       if !$script(YouTube.mrc) {
         msg $chan YouTube module has been loaded!
@@ -100,6 +109,15 @@ on $*:TEXT:/^[.](unloadmod)/Si:#: {
       }
       else {
         msg $chan Facts module is not loaded!
+      }
+    }
+    if ($2 == Admin) {
+      if $script(Admin.mrc) {
+        msg $chan Admin has been unloaded!
+        $(%loadcmd) scripts/Admin.mrc
+      }
+      else {
+        msg $chan Admin module is not loaded!
       }
     }
     if ($2 == YouTube) {
