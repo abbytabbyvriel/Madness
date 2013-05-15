@@ -40,7 +40,11 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == Wolfram) {
       if !$script(Wolfram.mrc) {
         msg $chan Wolfram module has been loaded!
+<<<<<<< HEAD
         $(%loadmod) Z:/home/tanmay/Madness/Wolfram.mrc
+=======
+        $(%loadmod) Wolfram.mrc
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
       }
       else {
         msg $chan Wolfram module is already loaded!
@@ -49,7 +53,11 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
     if ($2 == 8ball) {
       if !$script(8ball.mrc) {
         msg $chan 8ball module has been loaded!
+<<<<<<< HEAD
         load -rs Z:/home/tanmay/Madness/8ball.mrc
+=======
+        $(%loadmod) 8ball.mrc
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
       }
       else {
         msg $chan 8ball module is already loaded!
@@ -77,7 +85,11 @@ on $*:TEXT:/^[.](loadmod)/Si:#: {
       }
     }
     if ($2 == XOP) {
+<<<<<<< HEAD
       if !$script(XOP.mrc) {
+=======
+      if $script(XOP.mrc) {
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
         msg $chan XOP module has been loaded!
         $(%loadcmd) Z:/home/tanmay/Madness/XOP.mrc
       }

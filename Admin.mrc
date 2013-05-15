@@ -83,6 +83,7 @@ on $*:TEXT:/^[.](newserver):#: {
 on $*:TEXT:/^[!]/Si:#: {
   if ($($+(%,alias,.,$remove($1, !)),2) == $null) {
     if ($($+(%,access,.,$nick),2) > 3) {
+<<<<<<< HEAD
       if ($2 != $null) {
         var %command $+(alias.,$remove($1, 1))
         set %alias. $+ $remove($1, !) set
@@ -123,3 +124,42 @@ else {
   notice $nick Usage .change (item) (command)
 }
 }
+=======
+      var %command $+(alias.,$remove($1, !))
+      set %alias. $+ $remove($1, !) set
+      alias alias. $+ $remove($1, !) $2-
+      notice $nick $1 has been set to $2-
+    }
+    else {
+      alias. $+ $remove($1, !)
+    }
+  }
+  else {
+    alias. $+ $remove($1, !)
+  }
+}
+on $*:TEXT:/^[.](change)/Si:#: {
+  if ($2 != $null) {
+    if ($3 != $null) {
+      if ($($+(%,access,.,$nick,),2) > 2) {
+        if ($($+(%,alias,.,$2),2) != $null) {
+          /alias /alias. $+ $2 $3-
+          notice $nick ! $+ $2 changed to $3-
+        }
+        else {
+          notice $nick Alias $2 does not exist!
+        }
+      }
+      else {
+        notice $nick Permission denied.
+      }
+    }
+    else {
+      notice $nick Usage: .change (item) (commans)
+    }
+  }
+  else {
+    notice $nick Usage .change (item) (command)
+  }
+}
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085

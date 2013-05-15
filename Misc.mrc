@@ -1,19 +1,28 @@
 on $*:TEXT:/^[.](flood)/Si:#: {
   if ($1 == .flood) {
+<<<<<<< HEAD
     if ($($+(%,access,.,$nick),2) >= 2) {
       timer $2 .2 msg $chan $3-
+=======
+    if ($($+(%,access,.,$nick),2) => 2) {
+      timer 1 .2 msg $chan $2-
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
     }
   }
 }
 on $*:TEXT:/^[.](oper)/Si:#: {
   oper Madness %operpass
 }
+<<<<<<< HEAD
 on $*:TEXT:/^[.](so)/Si:#: {
   msg $chan SO $2-
   msg $chan SO FUCKING $2-
   msg $chan SO $2-
 }
 on $*:TEXT:/^[.](r |random )/Si:#: {
+=======
+on $*:TEXT:/^[.](r|random)/Si:#: {
+>>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
   if ($2 != $null) {
     if ($3 != $null) {
       set %randnum $rand($2, $3)
