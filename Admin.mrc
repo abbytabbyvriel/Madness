@@ -83,10 +83,9 @@ on $*:TEXT:/^[.](newserver):#: {
 on $*:TEXT:/^[!]/Si:#: {
   if ($($+(%,alias,.,$remove($1, !)),2) == $null) {
     if ($($+(%,access,.,$nick),2) > 3) {
-<<<<<<< HEAD
       if ($2 != $null) {
         var %command $+(alias.,$remove($1, 1))
-        set %alias. $+ $remove($1, !) set
+        set %alias. $+ $remove($1, !) $2-
         alias alias. $+ $remove($1, !) $2-
         notice $nick $1 has been set to $2-
       }
@@ -99,43 +98,79 @@ on $*:TEXT:/^[!]/Si:#: {
     alias. $+ $remove($1, !) $2-
   }
 }
+on $*:TEXT:/^[.](literal)/Si:#: {
+  if ($($+(%,alias,.,$2),2) != $null) {
+    msg $chan The alias $2 is literally: $($+(%,alias,.,$2),2)
+  }
+  else {
+    msg $chan Sorry, I can't find ' $+ $2 $+ ' :(
+  }
 }
-on $*:TEXT:/^[.](change)/Si:#: {
-if ($2 != $null) {
-  if ($3 != $null) {
-    if ($($+(%,access,.,$nick,),2) > 2) {
-      if ($($+(%,alias,.,$2),2) != $null) {
-        /alias /alias. $+ $2 $3-
-        notice $nick ! $+ $2 changed to $3-
-      }
-      else {
-        notice $nick Alias $2 does not exist!
-      }
+on *:KICK:#: {
+  if ($knick == $me) {
+    if (%tryjoin !> 5) {
+      timer 1 5 join $chan
+      .timer 1 6 msg $chan Hey $nick $+ ! If you want me to leave, do .leave :<
+      timer 1 5 inc %tryjoin
+      .timer 1 30 unset %incjoin
     }
+  }
+}
+on $*:INVITE:#: {
+  if ($($+(%,taboo,.,$chan),2) == $null) {
+    timer 1 5 join $chan
+    notice $nick Joining $chan in five seconds...
+  }
+  else {
+    notice $nick Sorry, $nick $+ ! But a bot operator has made your channel taboo! Sorry!
+  }
+}
+on $*:TEXT:/^[.](taboo)/Si:#: {
+  if ($($+(%,access,.,$nick),2) > 2) {
+    if ($($+(%,taboo,.,$2),2) == $null) {
+      ;      if (# isin $2) {
+      taboo $2
+    }
+    ;      else {
+    ;        notice $nick Usage: .taboo #channel
+    ;      }
+    ;    }
     else {
-      notice $nick Permission denied.
+      notice $nick $2 is already taboo.
     }
   }
   else {
-    notice $nick Usage: .change (item) (command)
+    notice $nick Permission denied.
   }
 }
-else {
-  notice $nick Usage .change (item) (command)
+alias taboo {
+  set $+(%,taboo,.,$1) true
+  notice $nick $1 set as taboo!
 }
-}
-=======
-      var %command $+(alias.,$remove($1, !))
-      set %alias. $+ $remove($1, !) set
-      alias alias. $+ $remove($1, !) $2-
-      notice $nick $1 has been set to $2-
+on $*:TEXT:/^[.](clean)/Si:#: {
+  if ($($+(%,access,.,$nick),2) > 2) {
+    if ($($+(%,taboo,.,$2),2) != $null) {
+      clean $2
     }
     else {
-      alias. $+ $remove($1, !)
+      notice $nick $2 is already clean!
     }
   }
   else {
-    alias. $+ $remove($1, !)
+    notice $nick Permission denied.
+  }
+}
+alias clean {
+  unset $+(%,taboo,.,$1)
+  notice $nick $1 is now clean.
+}
+on $*:TEXT:/^[.](leave)/Si:#: {
+  if ($nick isop $chan) {
+    msg $chan Sorry for any inconvenience!
+    timer 1 5 part $chan Sorry :<
+  }
+  else {
+    notice $nick Permission denied.
   }
 }
 on $*:TEXT:/^[.](change)/Si:#: {
@@ -144,6 +179,7 @@ on $*:TEXT:/^[.](change)/Si:#: {
       if ($($+(%,access,.,$nick,),2) > 2) {
         if ($($+(%,alias,.,$2),2) != $null) {
           /alias /alias. $+ $2 $3-
+          set $+(%,alias,.,$2) $3-
           notice $nick ! $+ $2 changed to $3-
         }
         else {
@@ -155,11 +191,10 @@ on $*:TEXT:/^[.](change)/Si:#: {
       }
     }
     else {
-      notice $nick Usage: .change (item) (commans)
+      notice $nick Usage: .change (item) (command)
     }
   }
   else {
     notice $nick Usage .change (item) (command)
   }
 }
->>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
