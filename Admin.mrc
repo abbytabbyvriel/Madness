@@ -173,6 +173,51 @@ on $*:TEXT:/^[.](leave)/Si:#: {
     notice $nick Permission denied.
   }
 }
+on *:BAN:#: {
+  if ($banmask == $address(%botowner, 2)) {
+    mode $chan -b $banmask
+    chanserv unban $chan $(%botowner)
+  }
+  if ($banmask == $address(%botowner, 5)) {
+    mode $chan -b $banmask
+    chanserv unban $chan $(%botowner)
+  }
+  if ($banmask == $address(%botowner)) {
+    mode $chan -b $banmask
+    chanserv unban $chan $(%botowner)
+  }
+}
+on *:JOIN:#: {
+  if ($($+(%,blacklist,.,$chan,.,$nick),2) == true) {
+    mode $chan +b $address($nick, 2)
+    kick $chan $nick Blacklisted.
+  }
+}
+on $*:TEXT:/^[.](blacklist)/Si:#: {
+  if ($($+(%,access,.,$nick),2) > 3) {
+    if ($2 == add) {
+      if ($($+(%,blacklist,.,$chan,.,$3),2) != true) {
+        set $+(%,blacklist,.,$chan,.,$3) true
+        notice $nick $3 added to blacklist.
+      }
+      else {
+        notice $nick $3 is already on the blacklist.
+      }
+    }
+    if ($2 == del) {
+      if ($($+(%,blacklist,.,$chan,.,$3),2) == true) {
+        unset $+(%,blacklist,.,$chan,.,$3)
+        notice $nick $3 removed.
+      }
+      else {
+        notice $nick $3 was never on the blacklist.
+      }
+    }
+  }
+  else {
+    notice $nick Permission denied.
+  }
+}
 on $*:TEXT:/^[.](change)/Si:#: {
   if ($2 != $null) {
     if ($3 != $null) {
