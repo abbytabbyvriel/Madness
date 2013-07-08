@@ -1,28 +1,40 @@
 on $*:TEXT:/^[.](flood)/Si:#: {
   if ($1 == .flood) {
-<<<<<<< HEAD
     if ($($+(%,access,.,$nick),2) >= 2) {
       timer $2 .2 msg $chan $3-
-=======
-    if ($($+(%,access,.,$nick),2) => 2) {
-      timer 1 .2 msg $chan $2-
->>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
     }
   }
+}
+on $*:TEXT:/^[.](echocmd)/Si:#: {
+  msg $chan %cmd. [ $+ [ $2 ] ]
+}
+on $*:TEXT:/^(Madness)/Si:#: {
+  var %lucky $rand(1, 100)
+  if ($($+(%,access,.,$nick),2) < 3) {
+    if (%lucky > 70) {
+      describe $chan $2-
+    }
+    else {
+      msg $chan No, $nick $+ .
+    }
+  }
+  else {
+    describe $chan $2-
+  }
+}
+on $*:TEXT:/^(hi madness|hello madness|hey madness|sup madness)/Si:#: {
+  msg $chan Hi $nick $+ ! I am a bot!
 }
 on $*:TEXT:/^[.](oper)/Si:#: {
   oper Madness %operpass
 }
-<<<<<<< HEAD
-on $*:TEXT:/^[.](so)/Si:#: {
-  msg $chan SO $2-
-  msg $chan SO FUCKING $2-
-  msg $chan SO $2-
+on $*:TEXT:/^[.](so )/Si:#: {
+  var %caps $replace($2-,a,A,b,B,c,C,d,D,e,E,f,F,g,G,h,H,i,I,j,J,k,K,l,L,m,M,n,N,o,O,p,P,q,Q,r,R,s,S,t,T,u,U,v,V,w,W,x,X,y,Y,z,Z)
+  msg $chan SO $(%caps)
+  msg $chan SO FUCKING $(%caps)
+  msg $chan SO $(%caps)
 }
 on $*:TEXT:/^[.](r |random )/Si:#: {
-=======
-on $*:TEXT:/^[.](r|random)/Si:#: {
->>>>>>> aee44671a80e62265e50b96cc11b33870a7fd085
   if ($2 != $null) {
     if ($3 != $null) {
       set %randnum $rand($2, $3)
@@ -94,10 +106,7 @@ on $*:TEXT:/^[.](fuck)/Si:#: {
 on $*:TEXT:/^[.](rape)/Si:#: {
   msg $chan Rape isn't funny >:|
 }
-on $*:TEXT:^[.](hump)/Si:#: {
-  describe $chan humps $2- slowly and cautiously
-}
-om $*:TEXT:/^[.](drug)/Si:#: {
+on $*:TEXT:/^[.](drug)/Si:#: {
   if ($2 != $null) {
     describe $chan gives $nick a gram of $2-
     msg $chan Listen, $nick $+ , whatever you do, you didn't get this from me.
@@ -184,8 +193,21 @@ on $*:TEXT:/^[.](fap)/Si:#: {
 on $*:TEXT:/^[.](hj|handjob)/Si:#: {
   describe $chan gives $2- a handjob
 }
+on $*:TEXT:/^[.](jihad|boom|allah)/Si:#: {
+  msg $chan ALLAHU AKBAR!!
+  part $chan BOOOOOOOOOM
+  timer 1 6 join $chan
+  timer 1 7 msg $chan I fucked my 72 virgins
+  timer 1 8 msg $chan ...They were guys ;)
+}
 on $*:TEXT:/^[.](bj|blowjob)/Si:#: {
-  describe $chan gives $2- a blowjob and swallows
+  if ($2 != $me) {
+    describe $chan gives $2- a blowjob and swallows
+  }
+  else {
+    describe $chan tries to blow himself
+    msg $chan I-I JUST CAN'T ;_;
+  }
 }
 on $*:TEXT:/^[.](squirt)/Si:#: {
   describe $chan squirts all over $2-

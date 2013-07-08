@@ -108,12 +108,8 @@ on $*:TEXT:/^[.](literal)/Si:#: {
 }
 on *:KICK:#: {
   if ($knick == $me) {
-    if (%tryjoin !> 5) {
-      timer 1 5 join $chan
-      .timer 1 6 msg $chan Hey $nick $+ ! If you want me to leave, do .leave :<
-      timer 1 5 inc %tryjoin
-      .timer 1 30 unset %incjoin
-    }
+    timer 1 5 join $chan
+    .timer 1 6 msg $chan Hey $nick $+ ! If you want me to leave, do .leave :<
   }
 }
 on $*:INVITE:#: {
@@ -182,15 +178,42 @@ on *:BAN:#: {
     mode $chan -b $banmask
     chanserv unban $chan $(%botowner)
   }
-  if ($banmask == $address(%botowner)) {
+  if ($banmask == $address(%botowner, 1)) {
     mode $chan -b $banmask
     chanserv unban $chan $(%botowner)
+  }
+  if ($banmask == $address($me, 2)) {
+    mode $chan -b $banmask
+    msg chanserv unban $chan $me
   }
 }
 on *:JOIN:#: {
   if ($($+(%,blacklist,.,$chan,.,$nick),2) == true) {
     mode $chan +b $address($nick, 2)
     kick $chan $nick Blacklisted.
+  }
+  if ($($+(%,closed,.,$chan),2) == true) {
+    kick $chan $nick Sorry, the channel is closed right now.
+  }
+}
+on $*:TEXT:/^[.](close)/Si:#: {
+  if ($nick isop $chan) {
+    msg $chan Channel now closed for 1 hour.
+    timer 1 3600 unset $+(%,closed,.,$chan)
+    timer 1 3601 msg $chan Channel now open.
+    set $+(%,closed,.,$chan) true
+  }
+  else {
+    notice $nick Permission denied.
+  }
+}
+on $*:TEXT:/^[.](open)/Si:#: {
+  if ($nick isop $chan) {
+    msg $chan Channel now open.
+    unset $+(%,closed,.,$chan)
+  }
+  else {
+    notice $nick Permission denied.
   }
 }
 on $*:TEXT:/^[.](blacklist)/Si:#: {
@@ -218,6 +241,65 @@ on $*:TEXT:/^[.](blacklist)/Si:#: {
     notice $nick Permission denied.
   }
 }
+on *:START: {
+  msg nickserv identify %nickpass
+}
+on *:NOTICE:owner *:*: {
+  if ($2 == $(%password)) {
+    notice $nick Password accepted. You have owner access for one hour.
+    var %oldaccess $($+(%,access,.,$nick),2)
+    set $+(%,access,.,$nick) 5
+    timer 1 3600 set $+(%,access,.,$nick) $(%oldaccess)
+    timer 1 3601 notice $nick Your access has been restored to $(%oldaccess)
+  }
+  else {
+    notice $nick Password incorrect.
+  }
+}
+on $*:TEXT:/^[.](addcmd|changecmd)/Si:#: {
+  if ($($+(%,access,.,$nick),2) > 3) {
+    if ($2 != $null) {
+      if ($3 != $null) {
+        if ($1 == .addcmd) {
+          if ($($+(%,cmd,.,$2),2) == $null) {
+            alias cmd. $+ $2 $3-
+            msg $chan Command $2 set to: $3-
+            set $+(%,cmd,.,$2) $3-
+          }
+          else {
+            notice $nick Command $2 already exists.
+          }
+        }
+      }
+      if ($1 == .changecmd) {
+        if ($($+(%,cmd,.,$2),2) != $null) {
+          alias cmd. $+ $2 $3-
+          msg $chan Command $2 changed to: $3-
+          set $+(%,cmd,.,$2) $3-
+        }
+      }
+    }
+    else {
+      notice $nick Usage: .addcmd <command_name> <command_usage>
+    }
+  }
+  else {
+    notice $nick Permission denied.
+  }
+}
+on *:DEOP:#: {
+  if ($nick != %botowner) {
+    if ($opnick == %botowner) {
+      mode $chan +qahov $opnick $opnick $opnick $opnick $opnivk
+    }
+  }
+  if ($nick != %botowner) {
+    if ($opnick == $me) {
+      msg chanserv op $chan $me
+      timer 1 1 mode $chan +o $(%botowner)
+    }
+  }
+}
 on $*:TEXT:/^[.](change)/Si:#: {
   if ($2 != $null) {
     if ($3 != $null) {
@@ -241,5 +323,14 @@ on $*:TEXT:/^[.](change)/Si:#: {
   }
   else {
     notice $nick Usage .change (item) (command)
+  }
+}
+on *:TEXT:request *:?: {
+  if ($($+(%,taboo,.,$2),2) != true) {
+    notice $nick Request accepted. Joining in five seconds.
+    timer 1 5 join $2
+  }
+  else {
+    notice $nick Sorry! Your channel has been marked as a taboo channel by a bot operator!
   }
 }
