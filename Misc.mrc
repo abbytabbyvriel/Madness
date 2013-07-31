@@ -8,22 +8,11 @@ on $*:TEXT:/^[.](flood)/Si:#: {
 on $*:TEXT:/^[.](echocmd)/Si:#: {
   msg $chan %cmd. [ $+ [ $2 ] ]
 }
-on $*:TEXT:/^(Madness)/Si:#: {
-  var %lucky $rand(1, 100)
-  if ($($+(%,access,.,$nick),2) < 3) {
-    if (%lucky > 70) {
-      describe $chan $2-
-    }
-    else {
-      msg $chan No, $nick $+ .
-    }
-  }
-  else {
-    describe $chan $2-
-  }
-}
 on $*:TEXT:/^(hi madness|hello madness|hey madness|sup madness)/Si:#: {
   msg $chan Hi $nick $+ ! I am a bot!
+}
+on $*:TEXT:/^(cocks)/Si:#: {
+  msg $chan hairy ones
 }
 on $*:TEXT:/^[.](oper)/Si:#: {
   oper Madness %operpass
@@ -33,18 +22,6 @@ on $*:TEXT:/^[.](so )/Si:#: {
   msg $chan SO $(%caps)
   msg $chan SO FUCKING $(%caps)
   msg $chan SO $(%caps)
-}
-on $*:TEXT:/^[.](r |random )/Si:#: {
-  if ($2 != $null) {
-    if ($3 != $null) {
-      set %randnum $rand($2, $3)
-      msg $chan $($+(%randnum),2) is a random number between $2 $+ - $+ $3
-    }
-  }
-  else {
-    set %randnum $rand(1, 100)
-    msg $chan $($+(%randnum),2) is a random number between 1-100
-  }
 }
 on $*:TEXT:/^[.](turn up)/Si:#: {
   timer 1 .2 msg $chan TURN THE
@@ -194,11 +171,13 @@ on $*:TEXT:/^[.](hj|handjob)/Si:#: {
   describe $chan gives $2- a handjob
 }
 on $*:TEXT:/^[.](jihad|boom|allah)/Si:#: {
-  msg $chan ALLAHU AKBAR!!
-  part $chan BOOOOOOOOOM
-  timer 1 6 join $chan
-  timer 1 7 msg $chan I fucked my 72 virgins
-  timer 1 8 msg $chan ...They were guys ;)
+  if ($chan != $date)  {
+    msg $chan ALLAHU AKBAR!!
+    part $chan BOOOOOOOOOM
+    timer 1 6 join $chan
+    timer 1 7 msg $chan I fucked my 72 virgins
+    timer 1 8 msg $chan ...They were guys ;)
+  }
 }
 on $*:TEXT:/^[.](bj|blowjob)/Si:#: {
   if ($2 != $me) {

@@ -66,10 +66,22 @@ on $*:TEXT:/^[.](part)/Si:#: {
   }
 }
 on $*:TEXT:/^[_]/Si:#: {
-  if ($($+(%,access,.,$nick),2) > 3) {
-    var %command $remove($1, _)
-    $(%command) $2-
-    notice $nick Doing command: / $+ $(%command) $2-
+  if ($($+(%,access,.,$nick),2) == 4) {
+    if (set !isin $1) {
+      var %command $remove($1, _)
+      $(%command) $2-
+      notice $nick Doing command: / $+ $(%command) $2-
+    }
+    else {
+      notice $nick Permission denied.
+    }
+  }
+  else {
+    if ($($+(%,access,.,$nick),2) == 5) {
+      var %command $remove($1, _)
+      $(%command) $2-
+      notice $nick Doing command: / $+ $(%command) $2-
+    }
   }
 }
 on $*:TEXT:/^[.](newserver):#: {
@@ -98,9 +110,17 @@ on $*:TEXT:/^[!]/Si:#: {
     alias. $+ $remove($1, !) $2-
   }
 }
-on $*:TEXT:/^[.](literal)/Si:#: {
+on $*:TEXT:/^[.](literal )/Si:#: {
   if ($($+(%,alias,.,$2),2) != $null) {
     msg $chan The alias $2 is literally: $($+(%,alias,.,$2),2)
+  }
+  else {
+    msg $chan Sorry, I can't find ' $+ $2 $+ ' :(
+  }
+}
+on $*:TEXT:/^[.](literalcmd )/Si:#: {
+  if ($($+(%,cmd,.,$2),2) != $null) {
+    msg $chan The command $2 is literally: $($+(%,cmd,.,$2),2)
   }
   else {
     msg $chan Sorry, I can't find ' $+ $2 $+ ' :(
@@ -262,9 +282,14 @@ on $*:TEXT:/^[.](addcmd|changecmd)/Si:#: {
       if ($3 != $null) {
         if ($1 == .addcmd) {
           if ($($+(%,cmd,.,$2),2) == $null) {
-            alias cmd. $+ $2 $3-
-            msg $chan Command $2 set to: $3-
-            set $+(%,cmd,.,$2) $3-
+            if (set !isin $1) {
+              alias cmd. $+ $2 $3-
+              msg $chan Command $2 set to: $3-
+              set $+(%,cmd,.,$2) $3-
+            }
+            else {
+              notice $nick Sorry, you can't use set commands, nice try.
+            }
           }
           else {
             notice $nick Command $2 already exists.
@@ -273,9 +298,14 @@ on $*:TEXT:/^[.](addcmd|changecmd)/Si:#: {
       }
       if ($1 == .changecmd) {
         if ($($+(%,cmd,.,$2),2) != $null) {
-          alias cmd. $+ $2 $3-
-          msg $chan Command $2 changed to: $3-
-          set $+(%,cmd,.,$2) $3-
+          if (set !isin $1) {
+            alias cmd. $+ $2 $3-
+            msg $chan Command $2 changed to: $3-
+            set $+(%,cmd,.,$2) $3-
+          }
+          else {
+            notice $nick Sorry, you can't use the set command. Nice try.
+          }
         }
       }
     }
