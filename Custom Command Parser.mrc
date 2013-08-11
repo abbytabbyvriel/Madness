@@ -1,7 +1,7 @@
 on *:TEXT:.*:#: {
   if ($($+(%,cmd,.,$1),2) != $null) || if ($($+(%,command,.,$1),2) != $null) {
     if ($chr(91) $+ item $+ $chr(93) !isin %cmd [ $+ [ $1 ] ]) {
-      cmd $+ $1-
+     .cmd $+ $1-
     }
     else {
       var %number $rand(1, %items)

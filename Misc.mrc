@@ -5,6 +5,40 @@ on $*:TEXT:/^[.](flood)/Si:#: {
     }
   }
 }
+on $*:TEXT:/^[.](tban|timeban)/Si:#: {
+  if ($botaccess > 2) {
+    if ($2 != $null) {
+      if ($3 != $null) {
+        var %banhost $address($2, 2)
+        mode $chan +b %banhost
+        kick $chan $2 Banned for $3 seconds by $nick $+ .
+        timer 1 $3 mode $chan -b %banhost
+      }
+      else {
+        notice $nick Specify a person.
+      }
+    }
+    else {
+      notice $nick Specify a time.
+    }
+  }
+  else {
+    notice $nick Permission denied.
+  }
+}
+
+on $*:TEXT:/^[!](worth)/Si:#: {
+  if ($($+(%,worth,.,$nick,.,date),2) != $date) {
+    var %worth $rand(1, 100)
+    set $+(%,worth,.,$nick) $calc($($+(%,worth,.,$nick),2) + %worth)
+    msg $chan $nick is worth $chr(36) $+ %worth today for a total of $chr(36) $+ $($+(%,worth,.,$nick),2) $+ .
+    set $+(%,worth,.,$nick,.,date) $date
+  }
+  else {
+    msg $chan No, $nick $+ ! You already got your worth for today!
+  }
+}
+
 on $*:TEXT:/^[.](echocmd)/Si:#: {
   msg $chan %cmd. [ $+ [ $2 ] ]
 }
